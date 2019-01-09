@@ -3,7 +3,9 @@ Display the telemetry from the Victron MPPT charge controller and display via we
 
 
 ## Installation
-Go to MPPTserver folder and run with nodemon start
+
+`cd MPPTserver && npm install`  
+ After installation run with `nodemon start` or `node start`.
 
 
 ## Notes
