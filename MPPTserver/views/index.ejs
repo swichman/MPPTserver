@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script>
+var source = new EventSource('/stream');
+
+source.onopen = function(e) {
+    console.log('event source opened.');
+    console.log(e);
+}
+
+source.onerror = function(e) {
+    console.log('error received :' + e);
+}
+
+source.onmessage = function(e) {
+    obj = JSON.parse(e.data);
+    console.log(obj);
+    parse(obj)
+}
+function parse(obj) {
+    document.getElementById("header").innerHTML = `<h2>${obj.LONG}</h2>`;
+    document.getElementById("battV").innerHTML = obj.V;
+    document.getElementById("battI").innerHTML = obj.I;
+    document.getElementById("panelV").innerHTML = obj.VPV;
+    document.getElementById("panelW").innerHTML = obj.PPV;
+    document.getElementById("chargeState").innerHTML = obj.CS;
+    document.getElementById("error").innerHTML = obj.ERR;
+    document.getElementById("loadState").innerHTML = obj.LOAD;
+    document.getElementById("loadI").innerHTML = obj.IL;
+    document.getElementById("yieldTot").innerHTML = obj.YTot;
+    document.getElementById("yieldTod").innerHTML = obj.YT;
+    document.getElementById("yieldYes").innerHTML = obj.YY;
+    document.getElementById("maxTod").innerHTML = obj.MT;
+    document.getElementById("maxYes").innerHTML = obj.MY;
+    document.getElementById("days").innerHTML = obj.Day;
+}
+        </script>
+    </head>
+    <body>
+        <div id="header">
+        </div>
+        <div id="container">
+            <div class="section" id="battery">
+                <label>Battery V: </label><p id="battV"></p><br>
+                <label>Battery I: </label><p id="battI"></p><br>
+                <label>Charge State: </label><p id="chargeState"></p><br>
+            </div>
+            <div class="section" id="panels">
+                <label>Panel V: </label><p id="panelV"></p><br>
+                <label>Panel W: </label><p id="panelW"></p><br>
+            </div>
+            <div class="section" id="load">
+                <label>Load State: </label><p id="loadState"></p><br>
+                <label>Load I: </label><p id="loadI"></p><br>
+            </div>
+            <div class="section" id="status">
+                <label>Error: </label><p id="error"></p><br>
+                <label>Yield Total: </label><p id="yieldTot"></p><br>
+                <label>Yield Today: </label><p id="yieldTod"></p><br>
+                <label>Yield Yesterday: </label><p id="yieldYes"></p><br>
+                <label>Max Today: </label><p id="maxTod"></p><br>
+                <label>Max Yesterday: </label><p id="maxYes"></p><br>
+                <label>Days In Operation: </label><p id="days"></p><br>
+            </div>
+        </div>
+    </body>
+</html>

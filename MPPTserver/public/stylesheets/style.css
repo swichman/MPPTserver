@@ -1,0 +1,58 @@
+@font-face{
+    font-family: xray;
+    src: url(/fonts/trench100.ttf);
+}
+
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #0066ff;
+}
+
+a {
+    color: #0066FF;
+}
+
+p {
+    display: inline;
+    padding-left: 40pt;
+}
+
+label {
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 400px;
+    text-align: right;
+}
+
+#header {
+    border: 5px solid #80b3ff;
+    border-radius: 10px;
+    border-top: 0px;
+    border-right: 0px;
+    text-align: left;
+    padding-left: 6%;
+}
+#header h2{
+    color: #cce0ff;
+    font-size: 80px;
+    font-family: xray;
+    padding: 0px;
+    line-height: 0;
+    font-weight: 9999;
+    text-shadow: 2px 3px #4460bb;
+}
+
+.section {
+    border: 1px solid #80b3ff;
+    border-radius: 20px;
+    border-right: 0px;
+    border-top: 0px;
+    padding: 5px;
+    font-family: xray;
+    color: #ddf0ff;
+    font-size: 45px;
+    padding-top: 20px;
+    font-weight: 9999;
+}
+
