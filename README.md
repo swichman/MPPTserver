@@ -5,7 +5,9 @@ Display the telemetry from the Victron MPPT charge controller and display via we
 ## Installation
 
 `cd MPPTserver && npm install`  
- After installation run with `nodemon start` or `node start`.
+ After installation run with `nodemon start` or `node start`.  
+
+ Access the site by directing your browser to http://ip-address:3000
 
 
 ## Notes
