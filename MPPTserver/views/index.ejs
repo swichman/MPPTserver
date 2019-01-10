@@ -2,7 +2,10 @@
 <html>
     <head>
         <link rel='stylesheet' href='/stylesheets/style.css' />
-        <script>
+        <script src="/javascripts/MPPT.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <script>
 var source = new EventSource('/stream');
 
 source.onopen = function(e) {
@@ -16,28 +19,10 @@ source.onerror = function(e) {
 
 source.onmessage = function(e) {
     obj = JSON.parse(e.data);
-    console.log(obj);
-    parse(obj)
+    parse(obj);
+    buildCharts(obj);
 }
-function parse(obj) {
-    document.getElementById("header").innerHTML = `<h2>${obj.PID_LONG}</h2>     <h4>Firmware: ${obj.FW}</h4>`;
-    document.getElementById("battV").innerHTML = obj.V + " V";
-    document.getElementById("battI").innerHTML = obj.I + " A";
-    document.getElementById("chargeState").innerHTML = obj.CS_LONG;
-    document.getElementById("panelV").innerHTML = obj.VPV + " V";
-    document.getElementById("panelW").innerHTML = obj.PPV + " W";
-    document.getElementById("error").innerHTML = obj.ERR_LONG;
-    document.getElementById("loadState").innerHTML = obj.LOAD;
-    document.getElementById("loadI").innerHTML = obj.IL + " A";
-    document.getElementById("yieldTot").innerHTML = obj.YTot + " kWh";
-    document.getElementById("yieldTod").innerHTML = obj.YT + " Wh";
-    document.getElementById("yieldYes").innerHTML = obj.YY + " Wh";
-    document.getElementById("maxTod").innerHTML = obj.MT + " W";
-    document.getElementById("maxYes").innerHTML = obj.MY + " W";
-    document.getElementById("days").innerHTML = obj.Day;
-}
-        </script>
-    </head>
+    </script>
     <body>
         <div id="header">
         </div>
@@ -46,10 +31,12 @@ function parse(obj) {
                 <label>Battery V: </label><p id="battV"></p><br>
                 <label>Battery I: </label><p id="battI"></p><br>
                 <label>Charge State: </label><p id="chargeState"></p><br>
+                <div id="BattPlotDiv"></div>
             </div>
             <div class="section" id="panels">
                 <label>Panel V: </label><p id="panelV"></p><br>
                 <label>Panel W: </label><p id="panelW"></p><br>
+                <div id="PanPlotDiv"></div>
             </div>
             <div class="section" id="load">
                 <label>Load State: </label><p id="loadState"></p><br>
