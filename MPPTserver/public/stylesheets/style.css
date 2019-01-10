@@ -5,7 +5,7 @@
 
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    background-color: #0066ff;
+    background-color: #0074d3;
 }
 
 a {
@@ -26,21 +26,31 @@ label {
 }
 
 #header {
+    min-height: 90px;
+    padding-left: 6%;
+    padding-top: 1px;
     border: 5px solid #80b3ff;
     border-radius: 10px;
     border-top: 0px;
     border-right: 0px;
-    text-align: left;
-    padding-left: 6%;
+    font-family: xray;
+    color: #cce0ff;
+    text-shadow: 2px 3px #4460bb;
+    background-image: linear-gradient(to top right, #80b3ff, #0074d3, #0074d3);
 }
 #header h2{
-    color: #cce0ff;
+    margin-bottom: 0px;
+    text-align: left;
     font-size: 80px;
-    font-family: xray;
-    padding: 0px;
+    padding-top: 5px;
     line-height: 0;
     font-weight: 9999;
-    text-shadow: 2px 3px #4460bb;
+}
+#header h4{
+    margin: 0px;
+    font-size: 30px;
+    padding-right: 2%;
+    text-align: right;
 }
 
 .section {

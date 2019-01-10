@@ -20,20 +20,20 @@ source.onmessage = function(e) {
     parse(obj)
 }
 function parse(obj) {
-    document.getElementById("header").innerHTML = `<h2>${obj.LONG}</h2>`;
-    document.getElementById("battV").innerHTML = obj.V;
-    document.getElementById("battI").innerHTML = obj.I;
-    document.getElementById("panelV").innerHTML = obj.VPV;
-    document.getElementById("panelW").innerHTML = obj.PPV;
-    document.getElementById("chargeState").innerHTML = obj.CS;
-    document.getElementById("error").innerHTML = obj.ERR;
+    document.getElementById("header").innerHTML = `<h2>${obj.PID_LONG}</h2>     <h4>Firmware: ${obj.FW}</h4>`;
+    document.getElementById("battV").innerHTML = obj.V + " V";
+    document.getElementById("battI").innerHTML = obj.I + " A";
+    document.getElementById("chargeState").innerHTML = obj.CS_LONG;
+    document.getElementById("panelV").innerHTML = obj.VPV + " V";
+    document.getElementById("panelW").innerHTML = obj.PPV + " W";
+    document.getElementById("error").innerHTML = obj.ERR_LONG;
     document.getElementById("loadState").innerHTML = obj.LOAD;
-    document.getElementById("loadI").innerHTML = obj.IL;
-    document.getElementById("yieldTot").innerHTML = obj.YTot;
-    document.getElementById("yieldTod").innerHTML = obj.YT;
-    document.getElementById("yieldYes").innerHTML = obj.YY;
-    document.getElementById("maxTod").innerHTML = obj.MT;
-    document.getElementById("maxYes").innerHTML = obj.MY;
+    document.getElementById("loadI").innerHTML = obj.IL + " A";
+    document.getElementById("yieldTot").innerHTML = obj.YTot + " kWh";
+    document.getElementById("yieldTod").innerHTML = obj.YT + " Wh";
+    document.getElementById("yieldYes").innerHTML = obj.YY + " Wh";
+    document.getElementById("maxTod").innerHTML = obj.MT + " W";
+    document.getElementById("maxYes").innerHTML = obj.MY + " W";
     document.getElementById("days").innerHTML = obj.Day;
 }
         </script>

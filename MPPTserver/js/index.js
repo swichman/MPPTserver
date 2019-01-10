@@ -1,5 +1,3 @@
-var serialport = require('serialport');
-
 //
 // BMV
 //
@@ -21,13 +19,45 @@ function get_product_longname(pid) {
     return ("Unknown");
 };
 
+function get_error_longname(err) {
+    if (err == "0") return("No Error");
+    if (err == "2") return("Battery voltage too high");
+    if (err == "17") return("Charger temperature too high");
+    if (err == "18") return("Charger over current");
+    if (err == "19") return("Charger current reversed");
+    if (err == "20") return("Bulk time limit exceeded");
+    if (err == "21") return("Current sensor issue (sensor bias/sensor broken");
+    if (err == "26") return("Terminals overheated");
+    if (err == "33") return("Input voltage too high (solar panel)");
+    if (err == "34") return("Input current too high (solar panel)");
+    if (err == "38") return("Input shutdown (due to excessive battery voltage)");
+    if (err == "116") return("Factory calibration data lost");
+    if (err == "117") return("Invalid/incompatible firmware");
+    if (err == "119") return("User settings invalid");
+    return("Unknown");
+};
+
+function get_cs_longname(cs) {
+    if (cs == "0") return("Off");
+    if (cs == "1") return("Low Power");
+    if (cs == "2") return("Fault");
+    if (cs == "3") return("Bulk");
+    if (cs == "4") return("Absorption");
+    if (cs == "5") return("Float");
+    if (cs == "9") return("Inverting");
+    return("Unknown");
+};
+
 function parse_serial(line) {
     var res = line.split("\t");
 
     switch(res[0]) {
+        case    'FW':
+            bmvdata.FW = res[1]/100;
+            break;
         case    'PID':
             bmvdata.PID = res[1];
-            bmvdata.LONG = get_product_longname(res[1]);    
+            bmvdata.PID_LONG = get_product_longname(res[1]);    
             break;
         case    'V':
             bmvdata.V = Math.floor(res[1]/10)/100;
@@ -43,9 +73,11 @@ function parse_serial(line) {
             break;
         case    'CS':
             bmvdata.CS = res[1];
+            bmvdata.CS_LONG = get_cs_longname(res[1]);
             break;
         case    'ERR':
             bmvdata.ERR = res[1];
+            bmvdata.ERR_LONG = get_error_longname(res[1]);
             break;
         case    'LOAD':
             bmvdata.LOAD = res[1];
