@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var vedirect = require('./js/parseMPPT.js');
+var sqlite3 = require('sqlite3').verbose();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -20,14 +21,78 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+/* ------------------------------------------------------/
+/   Create database and load it with streaming data      /
+/-------------------------------------------------------*/
+var db
+function createDB() {
+    db = new sqlite3.Database('db/VE.Direct_MPPT.db', createTable);
+}
+
+function createTable() {
+    db.run('CREATE TABLE if not exists mppt (year INT, month INT, day INT, hour INT, minute INT, second INT, fw FLOAT, pid INT, v FLOAT, i FLOAT, vpv FLOAT, ppv INT, cs INT, err INT, load TEXT, il FLOAT, yTot FLOAT, yt INT, yy INT, mt INT, my INT, runDay INT)');
+}
+
+function insertTableData(obj) {
+    var ins = db.prepare('INSERT INTO mppt VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    //                                             1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2
+    var d = new Date()
+    //ts = d.toLocaleTimeString();
+    y = d.getFullYear();
+    m = d.getMonth() + 1;
+    day = d.getDate();
+    hours = d.getHours();
+    minutes = d.getMinutes();
+    seconds = d.getSeconds();
+    ins.run(
+        y,
+        m,
+        day,
+        hours,
+        minutes,
+        seconds,
+        obj.FW,
+        obj.PID,
+        obj.V,
+        obj.I,
+        obj.VPV,
+        obj.PPV,
+        obj.CS,
+        obj.ERR,
+        obj.LOAD,
+        obj.IL,
+        obj.YTot,
+        obj.YT,
+        obj.YY,
+        obj.MT,
+        obj.MY,
+        obj.Day
+    )
+}
+
+createDB()
+app.get('/query',(req,res) => {
+    console.log(req.query);
+    db.all(
+        'SELECT * FROM mppt WHERE day=$day',
+        { $day: req.query.day },
+        (err, rows) => {
+            if (rows.length > 0)
+                res.send(rows);
+            else 
+                res.send('<h1>INVALID QUERY</h1>');
+        }
+    );
+});
 
 
 /* ------------------------------------------------------/
@@ -60,10 +125,14 @@ function MPPT_stream(msg) {
 }
 vedirect.open('/dev/serial/by-id/usb-VictronEnergy_BV_VE_Direct_cable_VE1BOJF3-if00-port0');
 console.log('Serial Opened');
+var count = 0;
 var displayinterval = setInterval(function () {
     MPPTdata = vedirect.update();
     MPPT_stream(MPPTdata);
-}, 500);
+    if (count % 5 == 0)
+        insertTableData(MPPTdata);
+    count++
+}, 1000);
 
 
 // catch 404 and forward to error handler

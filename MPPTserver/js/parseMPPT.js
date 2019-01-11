@@ -83,7 +83,7 @@ function parse_serial(line) {
             bmvdata.LOAD = res[1];
             break;
         case    'IL':
-            bmvdata.IL = res[1];
+            bmvdata.IL = res[1]/1000;
             break;
         case    'H19':
             bmvdata.YTot = res[1]/100;

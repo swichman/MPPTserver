@@ -15,35 +15,40 @@ function parse(obj) {
     document.getElementById("maxYes").innerHTML = obj.MY + " W";
     document.getElementById("days").innerHTML = obj.Day;
 }
-
-var timestamp = [];
-var battV = [];
-var battX = [];
-var battI = [];
-var panV = [];
-var panW = [];
+var gLen = 3600;
+var timestamp = new Array(gLen).fill(0);
+var battV = new Array(gLen).fill(0);
+var X = new Array(gLen).fill(0);
+var battI = new Array(gLen).fill(0);
+var panV = new Array(gLen).fill(0);
+var panW = new Array(gLen).fill(0);
 i = 0;
+while (i < gLen){
+    X[i] = i;
+    i++;
+}
 function buildCharts(obj) {
-
-    if (battV.length >= 172800) {
-        battV.shift();
-        battX.shift();
-        battI.shift();
-        panV.shift();
-        panW.shift();
-    }
     battI.push(obj.I);
     battV.push(obj.V);
     panV.push(obj.VPV);
     panW.push(obj.PPV);
-
-    battX.push(i);
+    var d = new Date();
+    timestamp.push(d.toLocaleTimeString());
     i++;
+    
+    if (battV.length >= gLen) {
+        battV.shift();
+        //X.shift();
+        battI.shift();
+        panV.shift();
+        panW.shift();
+    }
 
     var battTraceV = {
         type: 'line',
         mode: 'lines',
-        x: battX,
+        name: 'Battery Voltage',
+        x: X,
         y: battV,
         marker: {
             color: '#0054b3',
@@ -56,8 +61,9 @@ function buildCharts(obj) {
     var battTraceI = {
         type: 'line',
         mode: 'lines',
+        name: 'Battery Current',
         yaxis: 'y2',
-        x: battX,
+        x: X,
         y: battI,
         marker: {
             color: '#e5ffFF',
@@ -70,7 +76,8 @@ function buildCharts(obj) {
     var panTraceV = {
         type: 'line',
         mode: 'lines',
-        x: battX,
+        name: 'Panel Voltage',
+        x: X,
         y: panV,
         marker: {
             color: '#0054b3',
@@ -83,8 +90,9 @@ function buildCharts(obj) {
     var panTraceW = {
         type: 'line',
         mode: 'lines',
+        name: 'Panel Power',
         yaxis: 'y2',
-        x: battX,
+        x: X,
         y: panW,
         marker: {
             color: '#e5ffFF',
@@ -137,6 +145,6 @@ function buildCharts(obj) {
         }
     };
 
-    Plotly.newPlot('BattPlotDiv', battData, battLayout, {responsive: true});
-    Plotly.newPlot('PanPlotDiv', panData, panLayout, {responsive: true});
+    Plotly.newPlot('BattPlotDiv', battData, battLayout, {responsive: true, displayModeBar: false });
+    Plotly.newPlot('PanPlotDiv', panData, panLayout, {responsive: true, displayModeBar: false });
 }
