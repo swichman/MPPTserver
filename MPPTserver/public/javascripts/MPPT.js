@@ -1,7 +1,7 @@
-var timestamp = new Array(3600).fill(0);
-var X = new Array(3600).fill(0);
+var timestamp = new Array(1440).fill(0);
+var X = new Array(1440).fill(0);
 var iX = 0;
-while (iX < 3600){
+while (iX < 1440){
     X[iX] = iX;
     iX++;
 }
@@ -40,7 +40,7 @@ function buildCharts(obj) {
     d = new Date();
     timestamp.push(d.toLocaleTimeString());
   
-    if (battV.length >= 3600) {
+    if (battV.length >= 1440) {
         battV.shift();
         battI.shift();
         panV.shift();

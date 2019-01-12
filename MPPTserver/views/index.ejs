@@ -7,11 +7,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <script>
-var battV = [];
-var battI = [];
-var panV = [];
-var panW = [];
-var init = [];
+var battV = new Array(1440).fill(0);
+var battI = new Array(1440).fill(0);
+var panV = new Array(1440).fill(0);
+var panW = new Array(1440).fill(0);
+var init = new Array(1440).fill(0);
 var d = new Date;
 var count = 0;
 $.get( "query?day=" + d.getDate() , function( data ) {
@@ -22,7 +22,7 @@ $.get( "query?day=" + d.getDate() , function( data ) {
         panV.push(data[x].vpv);
         panW.push(data[x].ppv);
     }
-    while(battV.length > 3600){
+    while(battV.length > 1440){
         battV.shift();
         battI.shift();
         panV.shift();
@@ -45,8 +45,9 @@ source.onerror = function(e) {
 source.onmessage = function(e) {
     obj = JSON.parse(e.data);
     parse(obj);
-    if ( count % 60 )
+    if ( count % 60 == 0 )
         buildCharts(obj);
+    count++;
 }
     </script>
     <body>
