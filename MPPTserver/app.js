@@ -154,7 +154,7 @@ var count = 0;
 var displayinterval = setInterval(function () {
     MPPTdata = vedirect.update();
     MPPT_stream(MPPTdata);
-    if (count % 5 == 0)
+    if (count % 60 == 0)
         insertTableData(MPPTdata);
     count++
 }, 1000);

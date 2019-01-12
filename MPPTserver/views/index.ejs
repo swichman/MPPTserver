@@ -13,6 +13,7 @@ var panV = [];
 var panW = [];
 var init = [];
 var d = new Date;
+var count = 0;
 $.get( "query?day=" + d.getDate() , function( data ) {
     $( ".result" ).html( data );
     for (var x = 0; x < data.length; x++) {
@@ -44,7 +45,8 @@ source.onerror = function(e) {
 source.onmessage = function(e) {
     obj = JSON.parse(e.data);
     parse(obj);
-    buildCharts(obj);
+    if ( count % 60 )
+        buildCharts(obj);
 }
     </script>
     <body>
