@@ -4,13 +4,38 @@
         <link rel='stylesheet' href='/stylesheets/style.css' />
         <script src="/javascripts/MPPT.js"></script>
         <script src="/javascripts/plotly-latest.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <script>
+var battV = [];
+var battI = [];
+var panV = [];
+var panW = [];
+var init = [];
+$.get( "query?day=11", function( data ) {
+    $( ".result" ).html( data );
+    console.log(data);
+    for (var x = 0; x < data.length; x++) {
+        battV.push(data[x].v);
+        battI.push(data[x].i);
+        panV.push(data[x].vpv);
+        panW.push(data[x].ppv);
+    }
+    while(battV.length > 3600){
+        battV.shift();
+        battI.shift();
+        panV.shift();
+        panW.shift();
+    }
+    init = [ battV, battI, panV, panW ];
+    console.log(init);
+});
 var source = new EventSource('/stream');
 
 source.onopen = function(e) {
     console.log('event source opened.');
     console.log(e);
+    initData(init);
 }
 
 source.onerror = function(e) {

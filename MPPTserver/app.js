@@ -81,12 +81,37 @@ function insertTableData(obj) {
 
 createDB()
 app.get('/query',(req,res) => {
-    console.log(req.query);
+    var strArr = [];
+    var str = JSON.stringify(req.query);
+    str = str.replace(/"/g, '')
+    str = str.slice(1,-1);
+    str = str.split(",");
+    var i = 0;
+    while (i < str.length){
+        tmp = str[i].split(':');
+        strArr[i] = [ tmp[0], tmp[1] ]
+        i++;
+    }
+    console.log(strArr.length);
+    
+    selectStr = 'SELECT * FROM mppt WHERE ' + strArr[0][0] + '=' + strArr[0][1]
+    if (strArr.length > 1) {
+        var i = 1;
+        while (i < strArr.length){
+            selectStr = selectStr + ' AND ' + strArr[i][0] + '=' + strArr[i][1];
+            i++;
+        }
+    }
+    console.log(selectStr)
+
     db.all(
-        'SELECT * FROM mppt WHERE day=$day',
-        { $day: req.query.day },
+        selectStr,
         (err, rows) => {
-            if (rows.length > 0)
+            if (err){
+                res.send('<h2>Sorry, there was an invalid value in the query</h2><br><br>' + err);
+                console.log(err);
+            }
+            else if (rows.length > 0)
                 res.send(rows);
             else 
                 res.send('<h1>INVALID QUERY</h1>');

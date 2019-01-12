@@ -1,3 +1,10 @@
+var X = new Array(3600).fill(0);
+var iX = 0;
+while (iX < 3600){
+    X[iX] = iX;
+    iX++;
+}
+
 function parse(obj) {
     document.getElementById("header").innerHTML = `<h2>${obj.PID_LONG}</h2>     <h4>Firmware: ${obj.FW}</h4>`;
     document.getElementById("battV").innerHTML = obj.V + " V";
@@ -15,19 +22,16 @@ function parse(obj) {
     document.getElementById("maxYes").innerHTML = obj.MY + " W";
     document.getElementById("days").innerHTML = obj.Day;
 }
-var gLen = 3600;
-var timestamp = new Array(gLen).fill(0);
-var battV = new Array(gLen).fill(0);
-var X = new Array(gLen).fill(0);
-var battI = new Array(gLen).fill(0);
-var panV = new Array(gLen).fill(0);
-var panW = new Array(gLen).fill(0);
-i = 0;
-while (i < gLen){
-    X[i] = i;
-    i++;
+
+function initData(init) {
+    var battV = init[0];
+    var battI = init[1];
+    var panV = init[2];
+    var panW = init[3];
 }
+
 function buildCharts(obj) {
+/*
     battI.push(obj.I);
     battV.push(obj.V);
     panV.push(obj.VPV);
@@ -35,10 +39,9 @@ function buildCharts(obj) {
     var d = new Date();
     timestamp.push(d.toLocaleTimeString());
     i++;
-    
-    if (battV.length >= gLen) {
+  */
+    if (battV.length >= 3600) {
         battV.shift();
-        //X.shift();
         battI.shift();
         panV.shift();
         panW.shift();
