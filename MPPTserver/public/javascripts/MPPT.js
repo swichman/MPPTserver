@@ -1,3 +1,4 @@
+var timestamp = new Array(3600).fill(0);
 var X = new Array(3600).fill(0);
 var iX = 0;
 while (iX < 3600){
@@ -31,15 +32,14 @@ function initData(init) {
 }
 
 function buildCharts(obj) {
-/*
+
     battI.push(obj.I);
     battV.push(obj.V);
     panV.push(obj.VPV);
     panW.push(obj.PPV);
-    var d = new Date();
+    d = new Date();
     timestamp.push(d.toLocaleTimeString());
-    i++;
-  */
+  
     if (battV.length >= 3600) {
         battV.shift();
         battI.shift();
