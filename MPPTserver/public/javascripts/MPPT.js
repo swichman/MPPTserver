@@ -118,7 +118,7 @@ function buildCharts(obj) {
         },
         yaxis: {
             title: 'Battery Voltage',
-            range: [0, 18]
+            range: [9, 16]
         },
         yaxis2: {
             title: 'Battery Current',

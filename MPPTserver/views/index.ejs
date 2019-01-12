@@ -12,9 +12,9 @@ var battI = [];
 var panV = [];
 var panW = [];
 var init = [];
-$.get( "query?day=11", function( data ) {
+var d = new Date;
+$.get( "query?day=" + d.getDate() , function( data ) {
     $( ".result" ).html( data );
-    console.log(data);
     for (var x = 0; x < data.length; x++) {
         battV.push(data[x].v);
         battI.push(data[x].i);
@@ -28,7 +28,6 @@ $.get( "query?day=11", function( data ) {
         panW.shift();
     }
     init = [ battV, battI, panV, panW ];
-    console.log(init);
 });
 var source = new EventSource('/stream');
 
