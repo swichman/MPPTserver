@@ -7,13 +7,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <script>
-var battV = new Array(1440).fill(0);
-var battI = new Array(1440).fill(0);
-var panV = new Array(1440).fill(0);
-var panW = new Array(1440).fill(0);
-var init = new Array(1440).fill(0);
+var battV = [];
+var battI = [];
+var panV = [];
+var panW = [];
+var init = [];
 var d = new Date;
 var count = 0;
+
+d.setDate(d.getDate() - 1);
 $.get( "query?day=" + d.getDate() , function( data ) {
     $( ".result" ).html( data );
     for (var x = 0; x < data.length; x++) {
@@ -22,14 +24,29 @@ $.get( "query?day=" + d.getDate() , function( data ) {
         panV.push(data[x].vpv);
         panW.push(data[x].ppv);
     }
-    while(battV.length > 1440){
-        battV.shift();
-        battI.shift();
-        panV.shift();
-        panW.shift();
-    }
-    init = [ battV, battI, panV, panW ];
 });
+
+var d = new Date;
+$.get( "query?day=" + d.getDate() , function( data ) {
+    $( ".result" ).html( data );
+    for (var x = 0; x < data.length; x++) {
+        battV.push(data[x].v);
+    battV.shift();
+        battI.push(data[x].i);
+    battI.shift();
+        panV.push(data[x].vpv);
+    panV.shift();
+        panW.push(data[x].ppv);
+    panW.shift();
+    }
+}, cleanArray());
+
+function cleanArray() {
+init = [ battV, battI, panV, panW ];
+console.log(init);
+console.log('battV length is ' + battV.length);
+}
+
 var source = new EventSource('/stream');
 
 source.onopen = function(e) {
